@@ -201,4 +201,5 @@ test('Заполненный список билетов', async () => {
   ];
   expect(ticketList).toHaveLength(4);
   expect(ticketList).toEqual(expected);
+  123
 });

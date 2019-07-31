@@ -84,6 +84,7 @@ export interface IPassenger extends IBaseSchema {
   lastName: string;
   patronymic: string;
   birthDate: string;
+  userId: string;
 }
 
 /**

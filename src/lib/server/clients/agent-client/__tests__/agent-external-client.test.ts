@@ -373,22 +373,22 @@ test('Список билетов с персональными тарифами
 
    // В таблицу fare_basises добавляем строки:
 
-   // economy, isPublic: false, price: 500,
+   // economy, isPublic: false, price: 450,
    // amount: 30, flightId: flight1 (NRL09KS)
 
-   // economy, isPublic: false, price: 400,
+   // economy, isPublic: false, price: 350,
    // amount: 30, flightId: flight2 (NRL08LS)
    const NRL09KS = await client.fareBases.insert({
        classId: economyClass.id,
        isPublic: false,
-       price: 500,
+       price: 450,
        amount: 30,
        flightId: flight1.id,
    });
    const NRL08LS = await client.fareBases.insert({
        classId: economyClass.id,
        isPublic: false,
-       price: 400,
+       price: 350,
        amount: 30,
        flightId: flight2.id,
    });
@@ -405,8 +405,7 @@ test('Список билетов с персональными тарифами
    // userID: user1
 
 // В таблицу user добавляем данные:
-
-// tokens: 0, name: Frank, (user1)
+    // tokens: 0, name: Frank, (user1)
 
    const user1 = await client.users.insert({
        tokens: 0,
@@ -424,9 +423,8 @@ test('Список билетов с персональными тарифами
    });
 
    // В таблицу clusters добавляем данные:
-
-   // name: Weekendtraveler
-   // clusterID: (weekendtraveler)
+    // name: Weekendtraveler
+    // clusterID: (weekendtraveler)
 
    const cluster = await client.clusters.insert({
        name: "Weekendtraveler",

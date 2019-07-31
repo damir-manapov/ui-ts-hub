@@ -1,5 +1,5 @@
 import { AgentClient as Client } from '../client';
-import { ETicketType } from '../../../../shared/types';
+import { ETicketType, EPassengerType } from '../../../../shared/types';
 
 const client = new Client();
 
@@ -276,14 +276,14 @@ test('0 билетов если поиск на неверную дату', asyn
 
   // economy, isPublic: true, price: 400,
   // amount: 30, flightId: flight2 (NRL08LS)
-  const NRL09KS = await client.fareBases.insert({
+  await client.fareBases.insert({
     classId: economyClass.id,
     isPublic: true,
     price: 500,
     amount: 30,
     flightId: flight1.id,
   });
-  const NRL08LS = await client.fareBases.insert({
+  await client.fareBases.insert({
     classId: economyClass.id,
     isPublic: true,
     price: 400,
@@ -373,21 +373,21 @@ test('Список билетов с персональными тарифами
 
    // В таблицу fare_basises добавляем строки:
 
-   // economy, isPublic: true, price: 500,
+   // economy, isPublic: false, price: 500,
    // amount: 30, flightId: flight1 (NRL09KS)
 
-   // economy, isPublic: true, price: 400,
+   // economy, isPublic: false, price: 400,
    // amount: 30, flightId: flight2 (NRL08LS)
    const NRL09KS = await client.fareBases.insert({
        classId: economyClass.id,
-       isPublic: true,
+       isPublic: false,
        price: 500,
        amount: 30,
        flightId: flight1.id,
    });
    const NRL08LS = await client.fareBases.insert({
        classId: economyClass.id,
-       isPublic: true,
+       isPublic: false,
        price: 400,
        amount: 30,
        flightId: flight2.id,
@@ -420,7 +420,7 @@ test('Список билетов с персональными тарифами
        type: EPassengerType.International,
        patronymic: "",
        birthDate: new Date(1987, 8, 12).toUTCString(),
-       userID: user1.id,
+       userId: user1.id,
    });
 
    // В таблицу clusters добавляем данные:
@@ -438,7 +438,7 @@ test('Список билетов с персональными тарифами
    // passengerID: (passenger1)
    // clusterID: (weekendtraveler)
 
-   const passengersClusters = client.passengersClusters.insert({
+   await client.passengersClusters.insert({
        passengerId: passenger1.id,
        clusterId: cluster.id,
    });
@@ -448,12 +448,12 @@ test('Список билетов с персональными тарифами
    // clusterID: weekendtraveler, fareBasisID: NRL09KS, (personalTariff1)
    // clusterID: weekendtraveler, fareBasisID: NRL08LS, (personalTariff2)
 
-   const personalTariff1 = client.personalTariffs.insert({
+   await client.personalTariffs.insert({
        clusterId: cluster.id,
        fareBaseId: NRL09KS.id,
    });
 
-   const personalTariff2 = client.personalTariffs.insert({
+   await client.personalTariffs.insert({
        clusterId: cluster.id,
        fareBaseId: NRL08LS.id,
    });
@@ -463,7 +463,7 @@ test('Список билетов с персональными тарифами
    // ### Действие
 
    // Выполняем поиск билетов из Дубай (DXB) — Берлин (BER) на 2019.09.15 по ID пользователя
-   const ticketList = await client.searchTickets({
+   const ticketList = await client.searchTicketsForUser (user1.id, {
        departureCityId: dubai.id,
        destinationCityId: berlin.id,
        departureDate: new Date(2019, 9, 15).toUTCString(),
@@ -513,7 +513,7 @@ test('Список билетов с персональными тарифами
            departureDate: new Date(2019, 9, 15, 22).toUTCString(),
            destinationAirport: berlinAirport,
            destinationDate: new Date(2019, 9, 16, 1).toUTCString(),
-            type: ETicketType.Sweet,
+           type: ETicketType.Sweet,
            class: economyClass,
            fareBase: NRL08LS,
            airline: deltaAirlenes,
